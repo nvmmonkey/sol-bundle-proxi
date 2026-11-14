@@ -1,0 +1,126 @@
+# ✨ NEW: Fast startup with lazy initialization
+http_max_inflight_total: 30000
+http_max_inflight_per_region: 0
+proxy_success_cooldown_ms: 1000   # Allows 5 req/s per proxy = 50k RPS with 10k proxies
+proxy_error_cooldown_ms: 1500    # Punish errors less aggressively
+# ==================== Jito Proxy Configuration ====================
+# 控制jito限速 true/false
+# ==================== Rate Limit Backoff ====================
+# Enable automatic backoff when Jito rate limits are detected
+# When enabled, the proxy will:
+# - Extract the cooldown period from Jito's error message (e.g., "Retry after 30000ms")
+# - Automatically pause requests to that region for the specified duration
+# - Log cooldown status in debug mode
+# - Resume requests once the cooldown expires
+enable_rate_limit_backoff: true
+max_retry_attempts: 0
+proxy_rate_limit_interval: "1s"
+
+
+# 代理模式: "http", "grpc", or "both"
+proxy_mode: grpc
+
+# gRPC透明代理端口 (自动轮询所有区域)
+grpc_transparent_port: 8010
+
+# 是否启用区域专用端口 (8011-8019)
+grpc_use_region_ports: true
+
+# Fire-and-Forget模式 (true = 立即返回，false = 等待确认)
+fire_and_forget: false
+
+# 最大并发bundle数量
+max_concurrent_bundles: 28000
+# 5000IP 对应的总TPS为 5000 * 8 = 40000TPS，留0.2余量，所以需要48000TPS
+# 按照 RTT 0.6s 计算， 48000*0.6=28800 并发，连接会复用的，所以需要28000并发
+
+# 连接最大空闲时间 (支持: 1m, 5m, 1h 等)
+connection_max_idle_time: 5m
+
+# 调试模式 (true = 详细日志, false = 仅统计)
+debug_mode: false
+
+# 统一端口模式 (true = 8011-8019随机使用HTTP或gRPC)
+bind_unified_ports: true
+
+# Solana RPC配置
+solana_rpc_url: http://127.0.0.1:18888
+solana_rpc_fallback: https://api.mainnet-beta.solana.com
+
+# 代理列表文件路径
+proxy_list_file: proxy-list.txt
+
+#HTTP Fire-and-Forget
+http_fire_and_forget: false
+
+# ==================== HTTP反向代理端口配置 ====================
+# 格式: 端口号: 目标URL
+http_ports:
+  6001: https://ny.mainnet.block-engine.jito.wtf
+  6002: https://amsterdam.mainnet.block-engine.jito.wtf
+  6003: https://frankfurt.mainnet.block-engine.jito.wtf
+  6004: https://tokyo.mainnet.block-engine.jito.wtf
+  6005: https://slc.mainnet.block-engine.jito.wtf
+  6006: https://london.mainnet.block-engine.jito.wtf
+  6007: https://singapore.mainnet.block-engine.jito.wtf
+  6008: https://dublin.mainnet.block-engine.jito.wtf
+  # 6009: https://mainnet.block-engine.jito.wtf
+
+# ==================== 统一端口配置 (8011-8019) ====================
+# 当 bind_unified_ports = true 时使用
+unified_ports:
+  8011: https://ny.mainnet.block-engine.jito.wtf
+  8012: https://amsterdam.mainnet.block-engine.jito.wtf
+  8013: https://frankfurt.mainnet.block-engine.jito.wtf
+  8014: https://tokyo.mainnet.block-engine.jito.wtf
+  8015: https://slc.mainnet.block-engine.jito.wtf
+  8016: https://london.mainnet.block-engine.jito.wtf
+  8017: https://singapore.mainnet.block-engine.jito.wtf
+  8018: https://dublin.mainnet.block-engine.jito.wtf
+  # 8019: https://mainnet.block-engine.jito.wtf
+
+# ==================== Jito区域配置 ====================
+regions:
+  - name: NewYork
+    block_engine_url: ny.mainnet.block-engine.jito.wtf:443
+  - name: Amsterdam
+    block_engine_url: amsterdam.mainnet.block-engine.jito.wtf:443
+  - name: Frankfurt
+    block_engine_url: frankfurt.mainnet.block-engine.jito.wtf:443
+  - name: Tokyo
+    block_engine_url: tokyo.mainnet.block-engine.jito.wtf:443
+  - name: SaltLakeCity
+    block_engine_url: slc.mainnet.block-engine.jito.wtf:443
+  - name: London
+    block_engine_url: london.mainnet.block-engine.jito.wtf:443
+  - name: Singapore
+    block_engine_url: singapore.mainnet.block-engine.jito.wtf:443
+  - name: Dublin
+    block_engine_url: dublin.mainnet.block-engine.jito.wtf:443
+  # - name: Mainnet
+  #   block_engine_url: mainnet.block-engine.jito.wtf:443
+
+# ==================== gRPC端口到区域映射 ====================
+# 格式: 端口号: 区域索引 (从0开始)
+grpc_port_mapping:
+  8011: 0  # NewYork
+  8012: 1  # Amsterdam
+  8013: 2  # Frankfurt
+  8014: 3  # Tokyo
+  8015: 4  # SaltLakeCity
+  8016: 5  # London
+  8017: 6  # Singapore
+  8018: 7  # Dublin
+  # 8019: 8  # Mainnet
+
+# ==================== Jito Tip账户列表 ====================
+tip_accounts:
+  - 96gYZGLnJYVFmbjzopPSU6QiEV5fGqZNyN9nmNhvrZU5
+  - HFqU5x63VTqvQss8hp11i4wVV8bD44PvwucfZ2bU7gRe
+  - Cw8CFyM9FkoMi7K7Crf6HNQqf4uEMzpKw6QNghXLvLkY
+  - ADaUMid9yfUytqMBgopwjb2DTLSokTSzL1zt6iGPaS49
+  - DfXygSm4jCyNCybVYYK6DwvWqjKee8pbDmJGcLWNDXjh
+  - ADuUkR4vqLUMWXxW9gh6D6L8pMSawimctcNZ5pGwDcEt
+  - DttWaMuVvTiduZRnguLF7jNxTgiMBZ1hyAumKUiL2KRL
+  - 3AVi9Tg9Uo68tJfuvoKvqKNWKkC5wPdSSdeBnizKZ6jT
+

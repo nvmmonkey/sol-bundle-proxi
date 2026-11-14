@@ -1,0 +1,48 @@
+# ============================================================
+# SECRETS — never commit
+# ============================================================
+# Base58 Solana private key, read at runtime for Jito auth mode
+keypair.txt
+keypair*.txt
+*.key
+*.pem
+id.json
+.env
+.env.*
+!.env.example
+
+# ============================================================
+# Live operator config — commit the .example files instead
+# ============================================================
+config.yaml
+config.yml
+proxy-list.txt
+proxy-subnet.txt
+proxies_good.txt
+proxies_bad.txt
+
+# ============================================================
+# Build output
+# ============================================================
+gproxy
+proxy-grpc*
+proxy-tester
+*.exe
+*.test
+*.out
+
+# ============================================================
+# Logs / runtime
+# ============================================================
+*.log
+nohup.out
+logs/
+.pm2/
+
+# ============================================================
+# OS / editor
+# ============================================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
